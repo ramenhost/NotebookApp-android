@@ -1,4 +1,4 @@
-package com.cubestudios.apps.notebook;
+package com.cubestudios.apps.sqlhelper;
 
 import java.io.Serializable;
 
@@ -9,6 +9,9 @@ public class Note implements Serializable {
     private int id;
     private String title,content;
     private static final long serialVersionUID=1L;
+
+    public Note() {
+    }
 
     public Note(String title, int id, String content) {
         this.title = title;

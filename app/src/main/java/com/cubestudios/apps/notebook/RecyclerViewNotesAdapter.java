@@ -8,6 +8,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.cubestudios.apps.sqlhelper.Note;
+
 import java.util.ArrayList;
 
 /**
@@ -21,6 +23,10 @@ public class RecyclerViewNotesAdapter extends RecyclerView.Adapter<RecyclerViewN
     public RecyclerViewNotesAdapter(ArrayList<Note> notes, Context context) {
         this.notes = notes;
         this.context = context;
+    }
+
+    public void setNotes(ArrayList<Note> notes) {
+        this.notes = notes;
     }
 
     @Override

@@ -1,5 +1,6 @@
 package com.cubestudios.apps.notebook;
 
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -9,6 +10,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.cubestudios.apps.sqlhelper.Note;
+import com.cubestudios.apps.sqlhelper.SQLDatabaseHelper;
+
 import java.util.ArrayList;
 
 /**
@@ -16,6 +20,8 @@ import java.util.ArrayList;
  */
 public class HomeFragment extends Fragment {
     ArrayList<Note> notes = new ArrayList<>();
+    private RecyclerView recyclerView;
+    private RecyclerViewNotesAdapter notesAdapter;
 
     public HomeFragment() {
     }
@@ -26,14 +32,25 @@ public class HomeFragment extends Fragment {
 
         View view = inflater.inflate(R.layout.fragment_main, container, false);
 
+        SQLDatabaseHelper sqlDatabaseHelper = new SQLDatabaseHelper(getContext());
+        notes = sqlDatabaseHelper.getAllNotes();
+        sqlDatabaseHelper.close();
 
-        Note note = new Note("First Note", 1, "This is the Sample note created by the application");
-        notes.add(note);
-
-        RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.notes_recycler_view);
+        recyclerView = (RecyclerView) view.findViewById(R.id.notes_recycler_view);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        RecyclerViewNotesAdapter notesAdapter = new RecyclerViewNotesAdapter(notes, getContext());
+        notesAdapter = new RecyclerViewNotesAdapter(notes, getContext());
         recyclerView.setAdapter(notesAdapter);
         return view;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        SQLDatabaseHelper sqlDatabaseHelper = new SQLDatabaseHelper(getContext());
+        notes = sqlDatabaseHelper.getAllNotes();
+        notesAdapter = (RecyclerViewNotesAdapter) recyclerView.getAdapter();
+        notesAdapter.setNotes(notes);
+        notesAdapter.notifyDataSetChanged();
+        sqlDatabaseHelper.close();
     }
 }
