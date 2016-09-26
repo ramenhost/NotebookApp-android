@@ -9,6 +9,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -20,6 +21,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import java.util.ArrayList;
+import java.util.Map;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -36,8 +38,8 @@ public class MainActivity extends AppCompatActivity
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(getApplicationContext(),ViewNoteActivity.class);
-                intent.putExtra(Constants.TYPE,Constants.NEW_NOTE);
+                Intent intent = new Intent(getApplicationContext(), ViewNoteActivity.class);
+                intent.putExtra(Constants.TYPE, Constants.NEW_NOTE);
                 startActivity(intent);
             }
         });
@@ -51,6 +53,17 @@ public class MainActivity extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
+        Intent intent = getIntent();
+        if(intent.getExtras()!=null){
+            String activity = (String) intent.getExtras().get("data");
+            if(activity!=null) {
+                Log.d("Activity",activity);
+                if (activity.equals("ViewNoteActivity")) {
+                    Intent intent1 = new Intent(this, ViewNoteActivity.class);
+                    startActivity(intent1);
+                }
+            }
+        }
 
     }
 
@@ -111,7 +124,7 @@ public class MainActivity extends AppCompatActivity
         } else if (id == R.id.nav_send) {
 
         }
-        fragmentTransaction.replace(R.id.frame_container,fragment);
+        fragmentTransaction.replace(R.id.frame_container, fragment);
         fragmentTransaction.commit();
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
