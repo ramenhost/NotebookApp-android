@@ -46,6 +46,10 @@ public class HomeFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
+        update();
+    }
+
+    public void update(){
         SQLDatabaseHelper sqlDatabaseHelper = new SQLDatabaseHelper(getContext());
         notes = sqlDatabaseHelper.getAllNotes();
         notesAdapter = (RecyclerViewNotesAdapter) recyclerView.getAdapter();

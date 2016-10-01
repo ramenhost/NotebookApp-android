@@ -3,12 +3,9 @@ package com.cubestudios.apps.notebook;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
 import android.support.design.widget.NavigationView;
@@ -20,8 +17,6 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
-import java.util.ArrayList;
-import java.util.Map;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -54,16 +49,18 @@ public class MainActivity extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
 
         Intent intent = getIntent();
-        if(intent.getExtras()!=null){
+        if (intent.getExtras() != null) {
             String activity = (String) intent.getExtras().get("data");
-            if(activity!=null) {
-                Log.d("Activity",activity);
+            if (activity != null) {
+                Log.d("Activity", activity);
                 if (activity.equals("ViewNoteActivity")) {
                     Intent intent1 = new Intent(this, ViewNoteActivity.class);
                     startActivity(intent1);
                 }
             }
         }
+
+        onNavigationItemSelected(navigationView.getMenu().findItem(R.id.nav_notes));
 
     }
 
@@ -108,20 +105,17 @@ public class MainActivity extends AppCompatActivity
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
 
-        if (id == R.id.nav_camera) {
+        if (id == R.id.nav_notes) {
             // Handle the camera action
             fragment = new HomeFragment();
-        } else if (id == R.id.nav_gallery) {
+
+        } else if (id == R.id.nav_about) {
 
             fragment = new AboutFragment();
 
-        } else if (id == R.id.nav_slideshow) {
-
-        } else if (id == R.id.nav_manage) {
-
         } else if (id == R.id.nav_share) {
 
-        } else if (id == R.id.nav_send) {
+        } else if (id == R.id.nav_settings) {
 
         }
         fragmentTransaction.replace(R.id.frame_container, fragment);
@@ -131,4 +125,5 @@ public class MainActivity extends AppCompatActivity
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
+
 }
